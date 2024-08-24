@@ -3,9 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramMessangerPressingReport", "TelegramMessangerPressingReport\TelegramMessangerPressingReport.csproj", "{1A0DC17E-835A-48B9-8A55-574594BBA03E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramMessangerPressingReport", "TelegramMessangerPressingReport\TelegramMessangerPressingReport.csproj", "{1A0DC17E-835A-48B9-8A55-574594BBA03E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61899D99-250A-4755-B7F9-2494CCD9C518} = {61899D99-250A-4755-B7F9-2494CCD9C518}
+		{681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9} = {681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBasePomelo", "DataBasePomelo\DataBasePomelo.csproj", "{681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBasePomelo", "DataBasePomelo\DataBasePomelo.csproj", "{681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61899D99-250A-4755-B7F9-2494CCD9C518} = {61899D99-250A-4755-B7F9-2494CCD9C518}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{61899D99-250A-4755-B7F9-2494CCD9C518}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +30,10 @@ Global
 		{681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61899D99-250A-4755-B7F9-2494CCD9C518}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61899D99-250A-4755-B7F9-2494CCD9C518}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61899D99-250A-4755-B7F9-2494CCD9C518}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61899D99-250A-4755-B7F9-2494CCD9C518}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
