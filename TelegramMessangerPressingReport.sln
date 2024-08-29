@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramMessangerPressingRe
 	ProjectSection(ProjectDependencies) = postProject
 		{61899D99-250A-4755-B7F9-2494CCD9C518} = {61899D99-250A-4755-B7F9-2494CCD9C518}
 		{681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9} = {681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9}
+		{8E334FE2-AE33-420C-AAD7-999BC24BE89F} = {8E334FE2-AE33-420C-AAD7-999BC24BE89F}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBasePomelo", "DataBasePomelo\DataBasePomelo.csproj", "{681C3F0C-CD9D-4704-81A4-AE8CA5EB14C9}"
@@ -14,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBasePomelo", "DataBaseP
 		{61899D99-250A-4755-B7F9-2494CCD9C518} = {61899D99-250A-4755-B7F9-2494CCD9C518}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{61899D99-250A-4755-B7F9-2494CCD9C518}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{61899D99-250A-4755-B7F9-2494CCD9C518}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndShiftService", "EndShiftService\EndShiftService.csproj", "{8E334FE2-AE33-420C-AAD7-999BC24BE89F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61899D99-250A-4755-B7F9-2494CCD9C518} = {61899D99-250A-4755-B7F9-2494CCD9C518}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +40,10 @@ Global
 		{61899D99-250A-4755-B7F9-2494CCD9C518}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61899D99-250A-4755-B7F9-2494CCD9C518}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61899D99-250A-4755-B7F9-2494CCD9C518}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E334FE2-AE33-420C-AAD7-999BC24BE89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E334FE2-AE33-420C-AAD7-999BC24BE89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E334FE2-AE33-420C-AAD7-999BC24BE89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E334FE2-AE33-420C-AAD7-999BC24BE89F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

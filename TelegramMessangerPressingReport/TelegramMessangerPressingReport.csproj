@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataBasePomelo\DataBasePomelo.csproj" />
+    <ProjectReference Include="..\EndShiftService\EndShiftService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

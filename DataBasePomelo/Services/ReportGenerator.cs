@@ -15,7 +15,6 @@ namespace DataBasePomelo.Controllers
 
         public async Task<List<ReportResultDto>> GetCunsumptionReportAsync(ReportTime reportTime, CancellationToken cancellationToken)
         {
-
             var reportPeriod = ReportTimePeriodCalculator.GetReportPeriod(reportTime);
 
             if (reportPeriod.Start == DateTime.MinValue || reportPeriod.End == DateTime.MinValue)
@@ -28,7 +27,6 @@ namespace DataBasePomelo.Controllers
             DateTime end = reportPeriod.End;
 
             cancellationToken.ThrowIfCancellationRequested();
-
 
             var result = await (
                 from report in _dbContext.Reports
