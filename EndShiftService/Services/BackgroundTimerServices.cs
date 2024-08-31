@@ -2,6 +2,7 @@ using DataBasePomelo.Interface;
 using SharedLibrary.Interface;
 using System.Threading;
 using TelegramMessangerPressingReport.Controller;
+using TelegramService.Services;
 
 namespace EndShiftService.Services
 {
@@ -11,13 +12,15 @@ namespace EndShiftService.Services
         private readonly ITimeWaiting _timeWaiting;
         private readonly IReportService _reportService;
         private readonly ILogger<BackgroundTimerServices> _logger;
+        private readonly EventAggregator _eventAggregator;
 
-        public BackgroundTimerServices(IReportService reportService, ITimeWaiting timeWaiting, ILogger<BackgroundTimerServices> logger)
+        public BackgroundTimerServices(IReportService reportService, ITimeWaiting timeWaiting, EventAggregator eventAggregator, ILogger<BackgroundTimerServices> logger)
         {
             _logger = logger;
             _reportService = reportService;
             StartTime = DateTime.Now;
             _timeWaiting = timeWaiting;
+            _eventAggregator = eventAggregator;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -59,6 +62,13 @@ namespace EndShiftService.Services
                     {
                         _logger.LogInformation("Report for {Date} | Shift: {Shift} | Recipe: {RecipeName}",
                             report.Date, report.Shift, report.RecipeName);
+                    }
+
+                    string lastMessage = null;
+
+                    if (!string.IsNullOrEmpty(lastMessage))
+                    {
+                        await _eventAggregator.PublishMessage(lastMessage, stoppingToken);
                     }
 
                     #endregion

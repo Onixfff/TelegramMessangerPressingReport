@@ -13,5 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataBasePomelo\DataBasePomelo.csproj" />
+    <ProjectReference Include="..\TelegramService\TelegramService.csproj" />
   </ItemGroup>
 </Project>
