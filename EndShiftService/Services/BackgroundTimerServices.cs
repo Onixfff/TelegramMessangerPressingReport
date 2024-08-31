@@ -57,14 +57,24 @@ namespace EndShiftService.Services
                     }
 
                     var reportData = await _reportService.GetCunsumptionReportAsync(currentReportTime, stoppingToken);
+                    string? lastMessage = null;
 
                     foreach (var report in reportData)
                     {
                         _logger.LogInformation("Report for {Date} | Shift: {Shift} | Recipe: {RecipeName}",
                             report.Date, report.Shift, report.RecipeName);
-                    }
 
-                    string lastMessage = null;
+                        lastMessage = $"{report.Date}\n" +
+                            $"{report.Press}\n" +
+                            $"{report.Shift}\n" +
+                            $"{report.RecipeName}\n" +
+                            $"{report.LimeBrand}\n" +
+                            $"{report.LimeConsumption}\n" +
+                            $"{report.Sand1Name}\n" +
+                            $"{report.Sand1Consumption}\n" +
+                            $"{report.Sand2Name}\n" +
+                            $"{report.Sand2Consumption}";
+                    }
 
                     if (!string.IsNullOrEmpty(lastMessage))
                     {
