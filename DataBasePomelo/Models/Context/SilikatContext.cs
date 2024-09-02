@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using DataBasePomelo.Models.silikat;
+﻿using DataBasePomelo.Models.silikat;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace DataBasePomelo.Models.Context;
 

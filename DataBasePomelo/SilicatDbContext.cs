@@ -9,7 +9,7 @@ namespace DataBasePomelo
     {
         private readonly MaterialCostumerManufacturContext _materialContext;
         private readonly SilikatContext _silikatContext;
-        
+
         public SilicatDbContext(MaterialCostumerManufacturContext materialContext, SilikatContext silicatContext)
         {
             _materialContext = materialContext;
