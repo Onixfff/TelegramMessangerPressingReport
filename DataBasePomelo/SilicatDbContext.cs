@@ -8,9 +8,9 @@ namespace DataBasePomelo
     public class SilicatDbContext : DbContext
     {
         private readonly MaterialCostumerManufacturContext _materialContext;
-        private readonly SilicatDbContext _silikatContext;
+        private readonly SilikatContext _silikatContext;
         
-        public SilicatDbContext(MaterialCostumerManufacturContext materialContext, SilicatDbContext silicatContext)
+        public SilicatDbContext(MaterialCostumerManufacturContext materialContext, SilikatContext silicatContext)
         {
             _materialContext = materialContext;
             _silikatContext = silicatContext;

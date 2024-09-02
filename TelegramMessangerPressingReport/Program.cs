@@ -9,6 +9,7 @@ using EndShiftService.Services;
 using SharedLibrary.Interface;
 using TelegramMessangerPressingReport.Controller;
 using TelegramService.Services;
+using DataBasePomelo.Models.Context;
 
 namespace TelegramMessangerPressingReport
 {
@@ -25,14 +26,16 @@ namespace TelegramMessangerPressingReport
 
                 .ConfigureServices((context, services) =>
                 {
-                    var configuration = context.Configuration;
-
-                    // Получаем строку подключения из конфигурации
-                    var connectionString = configuration.GetConnectionString(nameof(DataBasePomelo));
-
                     // Регистрация DbContext
-                    services.AddDbContext<SilicatDbContext>(options =>
-                        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+                    services.AddDbContext<MaterialCostumerManufacturContext>();
+                    services.AddDbContext<SilikatContext>();
+                    
+                    services.AddScoped<SilicatDbContext>(provider =>
+                    {
+                        var materialContext = provider.GetRequiredService<MaterialCostumerManufacturContext>();
+                        var silikatContext = provider.GetRequiredService<SilikatContext>();
+                        return new SilicatDbContext(materialContext, silikatContext);
+                    });
 
                     // Регистрация других сервисов
                     services.AddScoped<IReportService, ReportGenerator>();

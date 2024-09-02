@@ -1,6 +1,5 @@
 using DataBasePomelo.Interface;
 using SharedLibrary.Interface;
-using System.Threading;
 using TelegramMessangerPressingReport.Controller;
 using TelegramService.Services;
 
