@@ -1,4 +1,4 @@
-﻿namespace DataBasePomelo.Models;
+﻿namespace DataBasePomelo.Models.silikat;
 
 /// <summary>
 /// Пресс-оснастака (короба, доборные короба, штампы)

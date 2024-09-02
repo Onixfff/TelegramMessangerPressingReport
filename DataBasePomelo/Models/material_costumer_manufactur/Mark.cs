@@ -1,6 +1,6 @@
-﻿namespace DataBasePomelo.Models;
+﻿namespace DataBasePomelo.Models.material_costumer_manufactur;
 
-public partial class Class
+public partial class Mark
 {
     public int Id { get; set; }
 

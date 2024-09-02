@@ -1,12 +1,10 @@
-﻿namespace DataBasePomelo.Models;
+﻿namespace DataBasePomelo.Models.silikat;
 
-public partial class Nomenklatura
+public partial class Class
 {
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
-
-    public int? Col { get; set; }
 
     public string? Comments { get; set; }
 }

@@ -1,9 +1,9 @@
-﻿namespace DataBasePomelo.Models;
+﻿namespace DataBasePomelo.Models.material_costumer_manufactur;
 
 /// <summary>
-/// Групы материало(добавки. цемент, известь и т.п)
+/// Производители
 /// </summary>
-public partial class GroupMaterial
+public partial class Manufacturer
 {
     public int Id { get; set; }
 

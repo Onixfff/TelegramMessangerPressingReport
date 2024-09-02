@@ -1,4 +1,4 @@
-﻿namespace DataBasePomelo.Models;
+﻿namespace DataBasePomelo.Models.silikat;
 
 public partial class ReportPack
 {

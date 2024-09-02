@@ -1,4 +1,4 @@
-﻿namespace DataBasePomelo.Models;
+﻿namespace DataBasePomelo.Models.material_costumer_manufactur;
 
 public partial class MaterialEntity
 {
