@@ -28,6 +28,26 @@ namespace DataBasePomelo.Controllers
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var reports = await (
+                from report in _dbContext.Reports
+                join recept in _dbContext.Recepts on report.IdRecept equals recept.Id
+                join materialLime in _dbContext.Material on report.IdNameLime equals materialLime.Id into materialLimeGroup
+                from lime in materialLimeGroup.DefaultIfEmpty()
+                join materialSand1 in _dbContext.Material on report.IdnameSand1 equals materialSand1.Id into materialSand1Group
+                from sand1 in materialSand1Group.DefaultIfEmpty()
+                join materialSand2 in _dbContext.Material on report.IdnameSand2 equals materialSand2.Id into materialSand2Group
+                from sand2 in materialSand2Group.DefaultIfEmpty()
+                where report.Id >= start && report.Id <= end
+                select new
+                {
+                    report,
+                    recept,
+                    lime,
+                    sand1,
+                    sand2
+                }
+            ).ToListAsync(cancellationToken);
+
             var result = await (
                 from report in _dbContext.Reports
                 join recept in _dbContext.Recepts on report.IdRecept equals recept.Id

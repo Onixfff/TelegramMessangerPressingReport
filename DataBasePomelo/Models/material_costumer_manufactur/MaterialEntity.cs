@@ -14,7 +14,7 @@ public partial class MaterialEntity
 
     public string? Comments { get; set; }
 
-    public virtual GroupMaterial IdGroupNavigation { get; set; } = null!;
+    public virtual GroupMaterialEntity IdGroupNavigation { get; set; } = null!;
 
-    public virtual Manufacturer IdManifacturNavigation { get; set; } = null!;
+    public virtual ManufacturerEntity IdManifacturNavigation { get; set; } = null!;
 }

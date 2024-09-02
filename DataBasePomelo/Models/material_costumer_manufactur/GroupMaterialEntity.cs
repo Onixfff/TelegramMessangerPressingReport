@@ -3,7 +3,7 @@
 /// <summary>
 /// Групы материало(добавки. цемент, известь и т.п)
 /// </summary>
-public partial class GroupMaterial
+public partial class GroupMaterialEntity
 {
     public int Id { get; set; }
 

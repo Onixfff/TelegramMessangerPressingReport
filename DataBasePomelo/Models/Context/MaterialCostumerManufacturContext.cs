@@ -17,9 +17,9 @@ public partial class MaterialCostumerManufacturContext : DbContext
 
     public virtual DbSet<Class> Classes { get; set; }
 
-    public virtual DbSet<GroupMaterial> GroupMaterials { get; set; }
+    public virtual DbSet<GroupMaterialEntity> GroupMaterials { get; set; }
 
-    public virtual DbSet<Manufacturer> Manufacturers { get; set; }
+    public virtual DbSet<ManufacturerEntity> Manufacturers { get; set; }
 
     public virtual DbSet<Mark> Marks { get; set; }
 
@@ -57,7 +57,7 @@ public partial class MaterialCostumerManufacturContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<GroupMaterial>(entity =>
+        modelBuilder.Entity<GroupMaterialEntity>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
@@ -77,7 +77,7 @@ public partial class MaterialCostumerManufacturContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Manufacturer>(entity =>
+        modelBuilder.Entity<ManufacturerEntity>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 

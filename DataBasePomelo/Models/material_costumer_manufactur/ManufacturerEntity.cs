@@ -3,7 +3,7 @@
 /// <summary>
 /// Производители
 /// </summary>
-public partial class Manufacturer
+public partial class ManufacturerEntity
 {
     public int Id { get; set; }
 
