@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DataBasePomelo.Models;
+﻿namespace DataBasePomelo.Models;
 
 /// <summary>
 /// Групы материало(добавки. цемент, известь и т.п)

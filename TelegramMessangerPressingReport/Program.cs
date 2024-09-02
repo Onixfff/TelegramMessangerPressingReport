@@ -8,6 +8,7 @@ using DataBasePomelo;
 using EndShiftService.Services;
 using SharedLibrary.Interface;
 using TelegramMessangerPressingReport.Controller;
+using TelegramService.Services;
 
 namespace TelegramMessangerPressingReport
 {
@@ -36,6 +37,7 @@ namespace TelegramMessangerPressingReport
                     // Регистрация других сервисов
                     services.AddScoped<IReportService, ReportGenerator>();
                     services.AddScoped<ITimeWaiting, ReportTimePeriodCalculator>();
+                    services.AddScoped<EventAggregator>();
 
                     // Регистрация background сервисов
                     services.AddHostedService<BackgroundTimerServices>();
