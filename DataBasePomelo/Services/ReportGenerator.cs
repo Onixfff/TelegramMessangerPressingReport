@@ -40,31 +40,15 @@ namespace DataBasePomelo.Controllers
             var materials = await _dbContext.Materials
                 .ToListAsync(cancellationToken);
 
-            var manufactures = await _dbContext.Manufacturers
-                .ToListAsync(cancellationToken);
-
-            var groupMaterials = await _dbContext.GroupMaterials
-                .ToListAsync(cancellationToken);
-
             // Объединение данных в памяти
             var reportResults = from report in reports
-                                join recept in recepts on report.IdRecept equals recept.Id
-                                join lime in materials on report.IdNameLime equals lime.Id into materialLimeGroup
-                                from lime in materialLimeGroup.DefaultIfEmpty()
-                                join sand1 in groupMaterials on report.IdnameSand1 equals sand1.Id into materialSand1Group
-                                from sand1 in materialSand1Group.DefaultIfEmpty()
-                                join sand2 in manufactures on report.IdnameSand2 equals sand2.Id into materialSand2Group
-                                from sand2 in materialSand2Group.DefaultIfEmpty()
-                                group new { report, recept, lime, sand1, sand2 } by new
-                                {
-                                    Date = report.Id.TimeOfDay < TimeSpan.FromHours(8)
-                                            ? report.Id.AddDays(-1).ToString("dd MMMM yyyy")
-                                            : report.Id.ToString("dd MMMM yyyy")
-                                }
+                                join brand in materials on report.IdNameLime equals brand.Id
+                                join sand1 in materials on report.IdnameSand1 equals sand1.Id
+                                join sand2 in materials on report.IdnameSand2 equals sand2.Id
                                 into reportGroup
                                 select new ReportResultDto
                                 {
-                                    Date = reportGroup.Key.Date,
+                                    Date = reportGroup.
                                     Press = "Первый",
                                     Shift = reportGroup.First().report.Id.TimeOfDay >= TimeSpan.FromHours(8) && reportGroup.First().report.Id.TimeOfDay <= TimeSpan.FromHours(20) ? "день" : "ночь",
                                     RecipeName = reportGroup.First().recept.Name,
