@@ -1,19 +1,25 @@
-﻿namespace DataBasePomelo.Controllers
+﻿using TelegramMessangerPressingReport.Controller;
+
+namespace DataBasePomelo.Controllers
 {
     public partial class ReportGenerator
     {
         public class ReportResultDto
         {
+            public ReportResultDto(string date, string position, ReportTime reportTime, string namePress, double coll) 
+            {
+                Date = date;
+                Position = position;
+                ReportTime = reportTime;
+                NamePress = namePress;
+                Coll = coll;
+            }
+
             public string Date { get; set; }
-            public string Press { get; set; }
-            public string Shift { get; set; }
-            public string RecipeName { get; set; }
-            public string LimeBrand { get; set; }
-            public double LimeConsumption { get; set; }
-            public string Sand1Name { get; set; }
-            public double Sand1Consumption { get; set; }
-            public string Sand2Name { get; set; }
-            public double Sand2Consumption { get; set; }
+            public string Position { get; set; }
+            public ReportTime ReportTime { get; set; }
+            public string NamePress { get; set; }
+            public double Coll { get; set; }
         }
     }
 }

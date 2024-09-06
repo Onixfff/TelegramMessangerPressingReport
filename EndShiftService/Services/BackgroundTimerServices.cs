@@ -60,19 +60,15 @@ namespace EndShiftService.Services
 
                     foreach (var report in reportData)
                     {
-                        _logger.LogInformation("Report for {Date} | Shift: {Shift} | Recipe: {RecipeName}",
-                            report.Date, report.Shift, report.RecipeName);
+                        _logger.LogInformation($"Report for Date: {report.Date} | Position: {report.Position}" +
+                            $" | ReportTime: {report.ReportTime} | NamePress: {report.NamePress} | Coll: {report.Coll}",
+                            report.Date, report.Position);
 
-                        lastMessage = $"{report.Date}\n" +
-                            $"{report.Press}\n" +
-                            $"{report.Shift}\n" +
-                            $"{report.RecipeName}\n" +
-                            $"{report.LimeBrand}\n" +
-                            $"{report.LimeConsumption}\n" +
-                            $"{report.Sand1Name}\n" +
-                            $"{report.Sand1Consumption}\n" +
-                            $"{report.Sand2Name}\n" +
-                            $"{report.Sand2Consumption}";
+                        lastMessage = $"{report.Date}" +
+                            $"{report.Position}" +
+                            $"{report.ReportTime}" +
+                            $"{report.NamePress}" +
+                            $"{report.Coll}";
                     }
 
                     if (!string.IsNullOrEmpty(lastMessage))

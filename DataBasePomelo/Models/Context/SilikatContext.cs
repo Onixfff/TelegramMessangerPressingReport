@@ -18,7 +18,7 @@ public partial class SilikatContext : DbContext
 
     public virtual DbSet<NameBrick> NameBricks { get; set; }
 
-    public virtual DbSet<Nomenklatura> Nomenklaturas { get; set; }
+    public virtual DbSet<Nomenklatura> NomenklaturasEntity { get; set; }
 
     public virtual DbSet<OrderPlate> OrderPlates { get; set; }
 
@@ -32,7 +32,7 @@ public partial class SilikatContext : DbContext
 
     public virtual DbSet<ReportPack> ReportPacks { get; set; }
 
-    public virtual DbSet<ReportPress> ReportPresses { get; set; }
+    public virtual DbSet<ReportPress> ReportPressesEntity { get; set; }
 
     public virtual DbSet<ReportPress2> ReportPress2s { get; set; }
 

@@ -10,6 +10,7 @@ using SharedLibrary.Interface;
 using TelegramMessangerPressingReport.Controller;
 using TelegramService.Services;
 using DataBasePomelo.Models.Context;
+using TelegramService.Options;
 
 namespace TelegramMessangerPressingReport
 {
@@ -21,29 +22,43 @@ namespace TelegramMessangerPressingReport
                 .ConfigureAppConfiguration((context, config) =>
                 {
                     config.SetBasePath(AppContext.BaseDirectory)
-                          .AddJsonFile("appsettings.json");
+                          .AddJsonFile("appsettings.json")
+                          .AddUserSecrets<Program>(optional: true);
                 })
 
                 .ConfigureServices((context, services) =>
                 {
+                    var configuration = context.Configuration;
+
                     // Регистрация DbContext
-                    services.AddDbContext<MaterialCostumerManufacturContext>();
-                    services.AddDbContext<SilikatContext>();
-                    
-                    services.AddScoped<SilicatDbContext>(provider =>
+                    var connectionString = configuration.GetConnectionString(nameof(DataBasePomelo));
+                    var userIds = configuration.GetSection("Peoples").Get<List<long>>();
+
+                    if (userIds == null)
                     {
-                        var materialContext = provider.GetRequiredService<MaterialCostumerManufacturContext>();
-                        var silikatContext = provider.GetRequiredService<SilikatContext>();
-                        return new SilicatDbContext(materialContext, silikatContext);
-                    });
+                        throw new InvalidOperationException("Configuration section 'Peoples' is missing or invalid.");
+                    }
+
+                    services.AddSingleton(userIds);
+                    services.AddSingleton<EventAggregator>();
 
                     // Регистрация других сервисов
+                    services.AddDbContext<SilikatContext>();
                     services.AddScoped<IReportService, ReportGenerator>();
                     services.AddScoped<ITimeWaiting, ReportTimePeriodCalculator>();
-                    services.AddScoped<EventAggregator>();
+
+                    services.Configure<TelegramOptions>(configuration.GetSection(TelegramOptions.Telegram));
+
+                    services.AddScoped<SilicatDbContext>(provider =>
+                    {
+                        var silikatContext = provider.GetRequiredService<SilikatContext>();
+                        return new SilicatDbContext(silikatContext);
+                    });
 
                     // Регистрация background сервисов
                     services.AddHostedService<BackgroundTimerServices>();
+                    services.AddHostedService<TelegramBotBackgroundService>();
+
                 })
                 .Build();
 

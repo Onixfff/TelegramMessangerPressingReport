@@ -6,7 +6,7 @@ public partial class Nomenklatura
 
     public string Name { get; set; } = null!;
 
-    public int? Col { get; set; }
+    public int? Col { get; set; } = 0!;
 
     public string? Comments { get; set; }
 }

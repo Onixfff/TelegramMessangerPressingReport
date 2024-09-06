@@ -7,26 +7,20 @@ namespace DataBasePomelo
 {
     public class SilicatDbContext : DbContext
     {
-        private readonly MaterialCostumerManufacturContext _materialContext;
         private readonly SilikatContext _silikatContext;
 
-        public SilicatDbContext(MaterialCostumerManufacturContext materialContext, SilikatContext silicatContext)
+        public SilicatDbContext(SilikatContext silicatContext)
         {
-            _materialContext = materialContext;
             _silikatContext = silicatContext;
         }
 
         // Свойства для доступа к нужным DbSet
-        public DbSet<MaterialEntity> Materials => _materialContext.Materials;
-        public DbSet<ManufacturerEntity> Manufacturers => _materialContext.Manufacturers;
-        public DbSet<GroupMaterialEntity> GroupMaterials => _materialContext.GroupMaterials;
-        public DbSet<ReceptEntity> Recepts => _silikatContext.Recepts;
-        public DbSet<ReportEntity> Reports => _silikatContext.Reports;
+        public DbSet<ReportPress> reportPresses => _silikatContext.ReportPressesEntity;
+        public DbSet<Nomenklatura> Nomenklaturas => _silikatContext.NomenklaturasEntity;
 
         // Метод для сохранения изменений в обоих контекстах
         public async Task SaveChangesAsync()
         {
-            await _materialContext.SaveChangesAsync();
             await _silikatContext.SaveChangesAsync();
         }
     }
