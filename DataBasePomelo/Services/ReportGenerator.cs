@@ -38,18 +38,18 @@ namespace DataBasePomelo.Controllers
                 .ToListAsync(cancellationToken);
 
             var reportResults = (from reportPres in reportPress
-                                join nomenklatura in nomenklaturas
-                                on reportPres.IdNomenklatura equals nomenklatura.Id
-                                group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
-                                let firstItem = reportGroup.FirstOrDefault()
-                                select new ReportResultDto(
-                                    firstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
-                                    "Первый",
-                                    reportTime,
-                                    firstItem.nomenklatura.Name,
-                                    Math.Round(reportGroup.Count() * (double)(firstItem.nomenklatura.Col ?? 0), 2)
-                                )).ToList();
-            
+                                 join nomenklatura in nomenklaturas
+                                 on reportPres.IdNomenklatura equals nomenklatura.Id
+                                 group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
+                                 let firstItem = reportGroup.FirstOrDefault()
+                                 select new ReportResultDto(
+                                     firstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
+                                     "Первый",
+                                     reportTime,
+                                     firstItem.nomenklatura.Name,
+                                     Math.Round(reportGroup.Count() * (double)(firstItem.nomenklatura.Col ?? 0), 2)
+                                 )).ToList();
+
             if (reportResults != null)
                 return (List<ReportResultDto>)reportResults;
             else

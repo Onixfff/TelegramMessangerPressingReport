@@ -18,9 +18,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{61899D99-250A-4755-B7F9-2494CCD9C518}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EndShiftService", "EndShiftService\EndShiftService.csproj", "{8E334FE2-AE33-420C-AAD7-999BC24BE89F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{61899D99-250A-4755-B7F9-2494CCD9C518} = {61899D99-250A-4755-B7F9-2494CCD9C518}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramService", "TelegramService\TelegramService.csproj", "{711640D8-0106-4B82-933F-BD0878DC84D7}"
 EndProject

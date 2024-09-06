@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-EndShiftService-86b15549-bce1-4a6b-bd63-a707649de698</UserSecretsId>
+    <Configurations>Debug;Release;щщш</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

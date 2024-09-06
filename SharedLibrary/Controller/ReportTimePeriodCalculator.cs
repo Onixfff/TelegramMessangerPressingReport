@@ -10,8 +10,8 @@ namespace TelegramMessangerPressingReport.Controller
 
     public class ReportTimePeriodCalculator : ITimeWaiting
     {
-        private readonly TimeOnly _dayShift = new TimeOnly(8,5,0,0,0); //Время начала дневной смены
-        private readonly TimeOnly _nightShift = new TimeOnly(20,5,0,0,0); //Время начала ночной смены
+        private readonly TimeOnly _dayShift = new TimeOnly(8, 5, 0, 0, 0); //Время начала дневной смены
+        private readonly TimeOnly _nightShift = new TimeOnly(20, 5, 0, 0, 0); //Время начала ночной смены
         private ReportTime _reportTime;
 
         public static (DateTime Start, DateTime End) GetReportPeriod(ReportTime reportTime)
@@ -66,7 +66,7 @@ namespace TelegramMessangerPressingReport.Controller
 
                     break;
                 case ReportTime.NightTime:
-                    
+
                     DateTime nextDay = new DateTime(DateOnly.FromDateTime(time.AddDays(1)), _dayShift);
 
                     TimeSpan differenceNowDayAndNextDay = nextDay - time;

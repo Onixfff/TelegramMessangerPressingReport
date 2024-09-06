@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-TelegramService-1a53778c-110a-4928-93bc-7817f08da492</UserSecretsId>
+    <Configurations>Debug;Release;щщш</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.json">
+    <Content Update="TelegramServicesettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

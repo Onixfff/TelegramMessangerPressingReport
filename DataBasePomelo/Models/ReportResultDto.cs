@@ -6,7 +6,7 @@ namespace DataBasePomelo.Controllers
     {
         public class ReportResultDto
         {
-            public ReportResultDto(string date, string position, ReportTime reportTime, string namePress, double coll) 
+            public ReportResultDto(string date, string position, ReportTime reportTime, string namePress, double coll)
             {
                 Date = date;
                 Position = position;

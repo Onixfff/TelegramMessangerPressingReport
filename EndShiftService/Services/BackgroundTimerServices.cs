@@ -45,7 +45,7 @@ namespace EndShiftService.Services
                     #endregion
 
                     #region отправка запроса на взятие данных
-                    
+
                     stoppingToken.ThrowIfCancellationRequested();
 
                     ReportTime currentReportTime = _timeWaiting.GetTimeReport();
@@ -78,7 +78,7 @@ namespace EndShiftService.Services
 
                     #endregion
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     _logger.LogError(ex, "An error occurred during the report generation.");
                 }

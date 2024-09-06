@@ -1,16 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataBasePomelo;
+using DataBasePomelo.Controllers;
+using DataBasePomelo.Interface;
+using DataBasePomelo.Models.Context;
+using EndShiftService.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DataBasePomelo.Interface;
-using DataBasePomelo.Controllers;
-using DataBasePomelo;
-using EndShiftService.Services;
 using SharedLibrary.Interface;
 using TelegramMessangerPressingReport.Controller;
-using TelegramService.Services;
-using DataBasePomelo.Models.Context;
 using TelegramService.Options;
+using TelegramService.Services;
 
 namespace TelegramMessangerPressingReport
 {
@@ -41,7 +41,7 @@ namespace TelegramMessangerPressingReport
                     services.AddSingleton(userIds);
                     services.AddSingleton<EventAggregator>();
 
-                    services.AddDbContext<SilikatContext>(options => 
+                    services.AddDbContext<SilikatContext>(options =>
                     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
                     services.AddScoped<IReportService, ReportGenerator>();
