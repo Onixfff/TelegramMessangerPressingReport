@@ -30,7 +30,6 @@ namespace TelegramMessangerPressingReport
                 {
                     var configuration = context.Configuration;
 
-                    // Регистрация DbContext
                     var connectionString = configuration.GetConnectionString(nameof(DataBasePomelo));
                     var userIds = configuration.GetSection("Peoples").Get<List<long>>();
 
@@ -42,8 +41,9 @@ namespace TelegramMessangerPressingReport
                     services.AddSingleton(userIds);
                     services.AddSingleton<EventAggregator>();
 
-                    // Регистрация других сервисов
-                    services.AddDbContext<SilikatContext>();
+                    services.AddDbContext<SilikatContext>(options => 
+                    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
                     services.AddScoped<IReportService, ReportGenerator>();
                     services.AddScoped<ITimeWaiting, ReportTimePeriodCalculator>();
 
