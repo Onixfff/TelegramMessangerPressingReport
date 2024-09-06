@@ -64,10 +64,10 @@ namespace EndShiftService.Services
                             $" | ReportTime: {report.ReportTime} | NamePress: {report.NamePress} | Coll: {report.Coll}",
                             report.Date, report.Position);
 
-                        lastMessage = $"{report.Date}" +
-                            $"{report.Position}" +
-                            $"{report.ReportTime}" +
-                            $"{report.NamePress}" +
+                        lastMessage = $"{report.Date}\n" +
+                            $"{report.Position}\n" +
+                            $"{report.ReportTime}\n" +
+                            $"{report.NamePress}\n" +
                             $"{report.Coll}";
                     }
 
