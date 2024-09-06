@@ -24,8 +24,6 @@ namespace DataBasePomelo.Controllers
                 throw new InvalidOperationException("Report period contains invalid dates.");
             }
 
-            DateTime currentTime = new DateTime(2024, 08, 27, 20, 04, 55);
-
             DateTime start = reportPeriod.Start;
             DateTime end = reportPeriod.End;
 
