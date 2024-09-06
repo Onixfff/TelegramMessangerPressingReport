@@ -26,10 +26,8 @@ namespace DataBasePomelo.Controllers
 
             DateTime currentTime = new DateTime(2024, 08, 27, 20, 04, 55);
 
-            //DateTime start = reportPeriod.Start;
-            DateTime start = new DateTime(2024, 08, 27, 8, 05, 00);
-            //DateTime end = reportPeriod.End;
-            DateTime end = new DateTime(2024, 08, 27, 20, 05, 00);
+            DateTime start = reportPeriod.Start;
+            DateTime end = reportPeriod.End;
 
             cancellationToken.ThrowIfCancellationRequested();
 
