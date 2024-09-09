@@ -37,7 +37,7 @@ namespace EndShiftService.Services
                     {
                         if (_logger.IsEnabled(LogLevel.Information))
                         {
-                            _logger.LogInformation("Waiting for {time} seconds until next event.", waitingTime.Value.TotalSeconds);
+                            _logger.LogInformation("Waiting for {Hours} hour {time} minut until next event.", waitingTime.Value.Hours, waitingTime.Value.Minutes);
                         }
 
                         // ∆дем до указанного времени
