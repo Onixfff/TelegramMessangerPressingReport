@@ -1,6 +1,7 @@
 ﻿using DataBasePomelo.Interface;
 using DataBasePomelo.Models.silikat;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TelegramMessangerPressingReport.Controller;
 
 namespace DataBasePomelo.Controllers
@@ -8,10 +9,12 @@ namespace DataBasePomelo.Controllers
     public partial class ReportGenerator : IReportService
     {
         private readonly SilicatDbContext _dbContext;
+        private ILogger<ReportGenerator> _logger;
 
-        public ReportGenerator(SilicatDbContext dbContext)
+        public ReportGenerator(SilicatDbContext dbContext, ILogger<ReportGenerator> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public async Task<ReportResultDto> GetCunsumptionReportAsync(ReportTime reportTime, CancellationToken cancellationToken)
@@ -42,18 +45,19 @@ namespace DataBasePomelo.Controllers
             switch (reportTime)
             {
                 case ReportTime.DayTime:
+
                     reportResults = (from reportPres in reportPress
-                                         join nomenklatura in nomenklaturas
-                                         on reportPres.IdNomenklatura equals nomenklatura.Id
-                                         group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
-                                         let firstItem = reportGroup.FirstOrDefault()
-                                         select new ReportResultDto(
-                                             firstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
-                                             "Первый",
-                                             ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
-                                             firstItem.nomenklatura.Name,
-                                             Math.Round(reportGroup.Count() * (double)(firstItem.nomenklatura.Col ?? 0), 2)
-                                         )).ToList();
+                                     join nomenklatura in nomenklaturas
+                                     on reportPres.IdNomenklatura equals nomenklatura.Id
+                                     group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
+                                     let firstItem = reportGroup.FirstOrDefault()
+                                     select new ReportResultDto(
+                                         firstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
+                                         "Первый",
+                                         ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
+                                         firstItem.nomenklatura.Name,
+                                         Math.Round(reportGroup.Count() * (double)(firstItem.nomenklatura.Col ?? 0), 2)
+                                     )).ToList();
                     break;
                 case ReportTime.NightTime:
                     reportResults = (from reportPres in reportPress
