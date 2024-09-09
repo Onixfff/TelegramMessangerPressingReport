@@ -64,15 +64,16 @@ namespace EndShiftService.Services
                         $" | ReportTime: {reportData.ReportTime} | NamePress: {reportData.NamePress} | Coll: {reportData.Coll}",
                         reportData.Date, reportData.Position);
 
-                    lastMessage = $"{reportData.Date}\n" +
-                        $"{reportData.Position}\n" +
-                        $"{reportData.ReportTime}\n" +
-                        $"{reportData.NamePress}\n" +
-                        $"{reportData.Coll}";
+                    lastMessage = $"Дата производства : {reportData.Date}\n" +
+                        $"№Пресса : {reportData.Position}\n" +
+                        $"Смена : {reportData.ReportTime}\n" +
+                        $"Рецепт : {reportData.NamePress}\n" +
+                        $"Количетво кирпича, шт. : {reportData.Coll}";
 
                     if (!string.IsNullOrEmpty(lastMessage))
                     {
                         await _eventAggregator.PublishMessage(lastMessage, stoppingToken);
+
                     }
 
                     #endregion
