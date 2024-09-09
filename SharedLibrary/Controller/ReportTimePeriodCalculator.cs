@@ -42,6 +42,24 @@ namespace TelegramMessangerPressingReport.Controller
             }
         }
 
+        public static string TranslateEnumToLanguage(ReportTime reportTime)
+        {
+            string translatedValue = null;
+
+            switch (reportTime)
+            {
+                case ReportTime.DayTime:
+                    translatedValue = "день";
+                    break;
+
+                case ReportTime.NightTime:
+                    translatedValue = "ночь";
+                    break;
+            }
+
+            return translatedValue;
+        }
+
         public ReportTime GetTimeReport()
         {
             return _reportTime;
