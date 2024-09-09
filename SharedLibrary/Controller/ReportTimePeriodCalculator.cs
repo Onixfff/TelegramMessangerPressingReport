@@ -85,7 +85,17 @@ namespace TelegramMessangerPressingReport.Controller
                     break;
                 case ReportTime.NightTime:
 
-                    DateTime nextDay = new DateTime(DateOnly.FromDateTime(time.AddDays(1)), _dayShift);
+                    DateTime nextDay = DateTime.MinValue;
+
+                    if (currentTime >= _nightShift)
+                    {
+                        nextDay = new DateTime(DateOnly.FromDateTime(time.AddDays(1)), _dayShift);
+                    }
+                    if (currentTime <= _dayShift)
+                    {
+                        nextDay = new DateTime(DateOnly.FromDateTime(time), _dayShift);
+                    }
+
 
                     TimeSpan differenceNowDayAndNextDay = nextDay - time;
 
