@@ -2,6 +2,7 @@
 using DataBasePomelo.Models.silikat;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Runtime.InteropServices;
 using TelegramMessangerPressingReport.Controller;
 
 namespace DataBasePomelo.Controllers
@@ -63,29 +64,25 @@ namespace DataBasePomelo.Controllers
 
             if (results != null && totalSum != null)
             {
+                string FirstOrSecond = null;
+
                 switch (reportTime)
                 {
                     case ReportTime.DayTime:
-
-                        reportResults = new ReportResultDto(
-                            results.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
-                            "Первый",
-                            ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
-                            results.FirstOrDefault().FirstItem.nomenklatura.Name,
-                            Math.Round((double)totalSum, 2)
-                        );
-                    break;
+                        FirstOrSecond = "Первый";
+                        break;
                     case ReportTime.NightTime:
-
-                        reportResults = new ReportResultDto(
-                            results.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
-                            "Второй",
-                            ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
-                            results.FirstOrDefault().FirstItem.nomenklatura.Name,
-                            Math.Round((double)totalSum, 2)
-                        );
-                    break;
+                        FirstOrSecond = "Второй";
+                        break;
                 }
+
+                reportResults = new ReportResultDto(
+                    results.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
+                    FirstOrSecond,
+                    ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
+                    results.FirstOrDefault().FirstItem.nomenklatura.Name,
+                    Math.Round((double)totalSum, 2)
+);
             }
 
             return reportResults;
