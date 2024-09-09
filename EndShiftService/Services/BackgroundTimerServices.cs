@@ -30,7 +30,7 @@ namespace EndShiftService.Services
                 {
                     #region ќжидание времени
 
-                    DateTime currentTime = new DateTime(2024, 08, 28, 08, 04, 59);
+                    DateTime currentTime = DateTime.Now;
 
                     TimeSpan? waitingTime = _timeWaiting.GetTimeWaitingRequest(currentTime);
 
@@ -38,7 +38,7 @@ namespace EndShiftService.Services
                     {
                         if (_logger.IsEnabled(LogLevel.Information))
                         {
-                            _logger.LogInformation("Waiting for {Hours} hour : {time} minut : {seconds} secons until next event.", waitingTime.Value.Hours, waitingTime.Value.Minutes, waitingTime.Value.Seconds);
+                            _logger.LogInformation("\tWaiting for\ndays : {days}\nhour : {Hours}\nminut : {time}\nseconds : {seconds}\n\tuntil next event.", waitingTime.Value.Days ,waitingTime.Value.Hours, waitingTime.Value.Minutes, waitingTime.Value.Seconds);
                         }
 
                         // ∆дем до указанного времени

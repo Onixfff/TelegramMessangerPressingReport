@@ -28,12 +28,8 @@ namespace DataBasePomelo.Controllers
                 throw new InvalidOperationException("Report period contains invalid dates.");
             }
 
-            DateTime currentTime = new DateTime(2024, 08, 28, 08, 5, 00);
-
-            //DateTime start = reportPeriod.Start;
-            DateTime start = new DateTime(2024, 08, 27, 20, 05, 00);
-            //DateTime end = reportPeriod.End;
-            DateTime end = new DateTime(2024, 08, 28, 8, 05, 00);
+            DateTime start = reportPeriod.Start;
+            DateTime end = reportPeriod.End;
 
             cancellationToken.ThrowIfCancellationRequested();
 
