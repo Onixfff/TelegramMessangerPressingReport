@@ -30,7 +30,7 @@ namespace EndShiftService.Services
                 {
                     #region ќжидание времени
 
-                    DateTime currentTime = DateTime.Now;
+                    DateTime currentTime = new DateTime(2024, 08, 27, 20, 04, 55);
                     TimeSpan? waitingTime = _timeWaiting.GetTimeWaitingRequest(currentTime);
 
                     if (waitingTime.HasValue && waitingTime.Value > TimeSpan.Zero && waitingTime != null)
