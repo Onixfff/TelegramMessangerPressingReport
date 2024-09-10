@@ -1,3 +1,4 @@
+using DataBasePomelo.Controllers;
 using DataBasePomelo.Interface;
 using SharedLibrary.Interface;
 using TelegramMessangerPressingReport.Controller;
@@ -58,26 +59,21 @@ namespace EndShiftService.Services
                         _logger.LogInformation("Fetching report for {reportTime} at {time}", currentReportTime, DateTimeOffset.Now);
                     }
 
-                    var reportData = await _reportService.GetCunsumptionReportAsync(currentReportTime, stoppingToken);
-                    string? lastMessage = null;
-                    
-                    foreach (var report in reportData)
-                    {
-                        _logger.LogInformation($"Report for Date: {report.Date} | Position: {report.Position}" +
-                            $" | ReportTime: {report.ReportTime} | NamePress: {report.NamePress} | Coll: {report.Coll}",
-                            report.Date, report.Position);
+                    var reportDataFirst = await _reportService.GetCunsumptionReportAsync(currentReportTime, DataBasePomelo.Controllers.ReportType.FirstReport, stoppingToken);
+                    var reportDataSecond = await _reportService.GetCunsumptionReportAsync(currentReportTime, DataBasePomelo.Controllers.ReportType.SecondReport, stoppingToken);
 
-                        lastMessage += $"Дата производства : {report.Date}\n" +
-                            $"№Пресса : {report.Position}\n" +
-                            $"Смена : {report.ReportTime}\n" +
-                            $"Рецепт : {report.NamePress}\n" +
-                            $"Количетво кирпича, шт. : {report.Coll}\n";
+                    string message = CreateMessage(reportDataFirst);
+
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        await _eventAggregator.PublishMessage(message, stoppingToken);
                     }
 
-                    if (!string.IsNullOrEmpty(lastMessage))
-                    {
-                        await _eventAggregator.PublishMessage(lastMessage, stoppingToken);
+                    message = CreateMessage(reportDataSecond);
 
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        await _eventAggregator.PublishMessage(message, stoppingToken);
                     }
 
                     #endregion
@@ -87,6 +83,23 @@ namespace EndShiftService.Services
                     _logger.LogError(ex, "An error occurred during the report generation.");
                 }
             }
+        }
+
+        private string CreateMessage(ReportGenerator.ReportResultDto reportResultDto)
+        {
+            string message = string.Empty;
+
+            _logger.LogInformation($"Report First for Date: {reportResultDto.Date} | Position: {reportResultDto.Position}" +
+            $" | ReportTime: {reportResultDto.ReportTime} | NamePress: {reportResultDto.NamePress} | Coll: {reportResultDto.Coll}",
+            reportResultDto.Date, reportResultDto.Position);
+
+            message += $"Дата производства : {reportResultDto.Date}\n" +
+            $"№Пресса : {reportResultDto.Position}\n" +
+            $"Смена : {reportResultDto.ReportTime}\n" +
+            $"Рецепт : {reportResultDto.NamePress}\n" +
+            $"Количетво кирпича, шт. : {reportResultDto.Coll}\n";
+
+            return message;
         }
     }
 }

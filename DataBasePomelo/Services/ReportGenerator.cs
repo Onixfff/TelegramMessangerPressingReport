@@ -6,6 +6,12 @@ using TelegramMessangerPressingReport.Controller;
 
 namespace DataBasePomelo.Controllers
 {
+    public enum ReportType
+    {
+        FirstReport,
+        SecondReport
+    }
+
     public partial class ReportGenerator : IReportService
     {
         private readonly SilicatDbContext _dbContext;
@@ -17,7 +23,7 @@ namespace DataBasePomelo.Controllers
             _logger = logger;
         }
 
-        public async Task <List<ReportResultDto>> GetCunsumptionReportAsync(ReportTime reportTime, CancellationToken cancellationToken)
+        public async Task <ReportResultDto> GetCunsumptionReportAsync(ReportTime reportTime, ReportType reportType, CancellationToken cancellationToken)
         {
             var reportPeriod = ReportTimePeriodCalculator.GetReportPeriod(reportTime);
 
@@ -32,74 +38,84 @@ namespace DataBasePomelo.Controllers
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            // Выполнение запроса в SilikatContext
-            List<ReportPress> reportPress1 = await _dbContext.reportPresses
-                .Where(report => report.Id >= start && report.Id <= end)
-            .ToListAsync(cancellationToken);
-
-            List<ReportPress2> reportPress2 = await _dbContext.reportPresses2
-                .Where(report => report.Id >= start && report.Id <= end)
-            .ToListAsync(cancellationToken);
-
             List<Nomenklatura> nomenklaturas = await _dbContext.Nomenklaturas
                 .ToListAsync(cancellationToken);
 
-            List<ReportResultDto> reportResults = new List<ReportResultDto>();
+            ReportResultDto reportResults = new ReportResultDto(null, null, null, null, double.NegativeZero);
 
-            var results1 = (from reportPres in reportPress1
-                           join nomenklatura in nomenklaturas
-                           on reportPres.IdNomenklatura equals nomenklatura.Id
-                           group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
-                           let firstItem = reportGroup.FirstOrDefault()
-                           select new
-                           {
-                               FirstItem = firstItem,
-                           });
-
-            var results2 = (from reportPres in reportPress2
-                            join nomenklatura in nomenklaturas
-                            on reportPres.IdNomenklatura equals nomenklatura.Id
-                            group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
-                            let firstItem = reportGroup.FirstOrDefault()
-                            select new
-                            {
-                                FirstItem = firstItem,
-                            });
-
-            var totalSum1 = (from reportPres in reportPress1
-                            join nomenklatura in nomenklaturas
-                            on reportPres.IdNomenklatura equals nomenklatura.Id
-                            select nomenklatura.Col).Sum();
-
-            var totalSum2 = (from reportPres in reportPress2
-                             join nomenklatura in nomenklaturas
-                             on reportPres.IdNomenklatura equals nomenklatura.Id
-                             select nomenklatura.Col).Sum();
-
-            if (results1 != null && totalSum1 != null)
+            switch (reportType)
             {
-                string FirstOrSecond = "Первый";
+                case ReportType.FirstReport:
+                    List<ReportPress> reportPress1 = await _dbContext.reportPresses
+                    .Where(report => report.Id >= start && report.Id <= end)
+                    .ToListAsync(cancellationToken);
 
-                reportResults.Add(new ReportResultDto(
-                    results1.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
-                    FirstOrSecond,
-                    ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
-                    results1.FirstOrDefault().FirstItem.nomenklatura.Name,
-                    Math.Round((double)totalSum1, 2))
-                );
-            }
+                    var results1 = (from reportPres in reportPress1
+                                    join nomenklatura in nomenklaturas
+                                    on reportPres.IdNomenklatura equals nomenklatura.Id
+                                    group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
+                                    let firstItem = reportGroup.FirstOrDefault()
+                                    select new
+                                    {
+                                        FirstItem = firstItem,
+                                    });
 
-            if (results2 != null && totalSum2 != null)
-            {
-                string FirstOrSecond = "Второй";
+                    var totalSum1 = (from reportPres in reportPress1
+                                     join nomenklatura in nomenklaturas
+                                     on reportPres.IdNomenklatura equals nomenklatura.Id
+                                     select nomenklatura.Col).Sum();
 
-                reportResults.Add(new ReportResultDto(
-                    results2.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
-                    FirstOrSecond,
-                    ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
-                    results2.FirstOrDefault().FirstItem.nomenklatura.Name,
-                    Math.Round((double)totalSum2, 2))
-                );
+                    if (results1 != null && totalSum1 != null)
+                    {
+                        string FirstOrSecond = "Первый";
+
+                        reportResults = new ReportResultDto(
+                            results1.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
+                            FirstOrSecond,
+                            ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
+                            results1.FirstOrDefault().FirstItem.nomenklatura.Name,
+                            Math.Round((double)totalSum1, 2)
+                        );
+                    }
+
+                    break;
+                case ReportType.SecondReport:
+                    List<ReportPress2> reportPress2 = await _dbContext.reportPresses2
+                    .Where(report => report.Id >= start && report.Id <= end)
+                    .ToListAsync(cancellationToken);
+
+                    var results2 = (from reportPres in reportPress2
+                                    join nomenklatura in nomenklaturas
+                                    on reportPres.IdNomenklatura equals nomenklatura.Id
+                                    group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
+                                    let firstItem = reportGroup.FirstOrDefault()
+                                    select new
+                                    {
+                                        FirstItem = firstItem,
+                                    });
+
+                    var totalSum2 = (from reportPres in reportPress2
+                                     join nomenklatura in nomenklaturas
+                                     on reportPres.IdNomenklatura equals nomenklatura.Id
+                                     select nomenklatura.Col).Sum();
+
+                    if (results2 != null && totalSum2 != null)
+                    {
+                        string FirstOrSecond = "Второй";
+
+                        reportResults = new ReportResultDto(
+                            results2.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
+                            FirstOrSecond,
+                            ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
+                            results2.FirstOrDefault().FirstItem.nomenklatura.Name,
+                            Math.Round((double)totalSum2, 2)
+                        );
+                    }
+
+                    break;
+                default:
+                    cancellationToken.ThrowIfCancellationRequested();
+                    throw new InvalidOperationException("Invalid report type specified.");
             }
 
             return reportResults;
