@@ -17,7 +17,7 @@ namespace DataBasePomelo.Controllers
             _logger = logger;
         }
 
-        public async Task<ReportResultDto> GetCunsumptionReportAsync(ReportTime reportTime, CancellationToken cancellationToken)
+        public async Task <List<ReportResultDto>> GetCunsumptionReportAsync(ReportTime reportTime, CancellationToken cancellationToken)
         {
             var reportPeriod = ReportTimePeriodCalculator.GetReportPeriod(reportTime);
 
@@ -33,16 +33,20 @@ namespace DataBasePomelo.Controllers
             cancellationToken.ThrowIfCancellationRequested();
 
             // Выполнение запроса в SilikatContext
-            List<ReportPress> reportPress = await _dbContext.reportPresses
+            List<ReportPress> reportPress1 = await _dbContext.reportPresses
+                .Where(report => report.Id >= start && report.Id <= end)
+            .ToListAsync(cancellationToken);
+
+            List<ReportPress2> reportPress2 = await _dbContext.reportPresses2
                 .Where(report => report.Id >= start && report.Id <= end)
             .ToListAsync(cancellationToken);
 
             List<Nomenklatura> nomenklaturas = await _dbContext.Nomenklaturas
                 .ToListAsync(cancellationToken);
 
-            ReportResultDto reportResults = null;
+            List<ReportResultDto> reportResults = new List<ReportResultDto>();
 
-            var results = (from reportPres in reportPress
+            var results1 = (from reportPres in reportPress1
                            join nomenklatura in nomenklaturas
                            on reportPres.IdNomenklatura equals nomenklatura.Id
                            group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
@@ -52,32 +56,50 @@ namespace DataBasePomelo.Controllers
                                FirstItem = firstItem,
                            });
 
-            var totalSum = (from reportPres in reportPress
+            var results2 = (from reportPres in reportPress2
+                            join nomenklatura in nomenklaturas
+                            on reportPres.IdNomenklatura equals nomenklatura.Id
+                            group new { reportPres, nomenklatura } by reportPres.Id into reportGroup
+                            let firstItem = reportGroup.FirstOrDefault()
+                            select new
+                            {
+                                FirstItem = firstItem,
+                            });
+
+            var totalSum1 = (from reportPres in reportPress1
                             join nomenklatura in nomenklaturas
                             on reportPres.IdNomenklatura equals nomenklatura.Id
                             select nomenklatura.Col).Sum();
 
-            if (results != null && totalSum != null)
+            var totalSum2 = (from reportPres in reportPress2
+                             join nomenklatura in nomenklaturas
+                             on reportPres.IdNomenklatura equals nomenklatura.Id
+                             select nomenklatura.Col).Sum();
+
+            if (results1 != null && totalSum1 != null)
             {
-                string FirstOrSecond = null;
+                string FirstOrSecond = "Первый";
 
-                switch (reportTime)
-                {
-                    case ReportTime.DayTime:
-                        FirstOrSecond = "Первый";
-                        break;
-                    case ReportTime.NightTime:
-                        FirstOrSecond = "Второй";
-                        break;
-                }
-
-                reportResults = new ReportResultDto(
-                    results.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
+                reportResults.Add(new ReportResultDto(
+                    results1.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
                     FirstOrSecond,
                     ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
-                    results.FirstOrDefault().FirstItem.nomenklatura.Name,
-                    Math.Round((double)totalSum, 2)
-);
+                    results1.FirstOrDefault().FirstItem.nomenklatura.Name,
+                    Math.Round((double)totalSum1, 2))
+                );
+            }
+
+            if (results2 != null && totalSum2 != null)
+            {
+                string FirstOrSecond = "Второй";
+
+                reportResults.Add(new ReportResultDto(
+                    results2.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
+                    FirstOrSecond,
+                    ReportTimePeriodCalculator.TranslateEnumToLanguage(reportTime),
+                    results2.FirstOrDefault().FirstItem.nomenklatura.Name,
+                    Math.Round((double)totalSum2, 2))
+                );
             }
 
             return reportResults;

@@ -32,9 +32,9 @@ public partial class SilikatContext : DbContext
 
     public virtual DbSet<ReportPack> ReportPacks { get; set; }
 
-    public virtual DbSet<ReportPress> ReportPressesEntity { get; set; }
+    public virtual DbSet<ReportPress> ReportPresses1Entity { get; set; }
 
-    public virtual DbSet<ReportPress2> ReportPress2s { get; set; }
+    public virtual DbSet<ReportPress2> ReportPress2Entity { get; set; }
 
     public virtual DbSet<SkladPlateActual> SkladPlateActuals { get; set; }
 

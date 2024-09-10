@@ -60,16 +60,19 @@ namespace EndShiftService.Services
 
                     var reportData = await _reportService.GetCunsumptionReportAsync(currentReportTime, stoppingToken);
                     string? lastMessage = null;
+                    
+                    foreach (var report in reportData)
+                    {
+                        _logger.LogInformation($"Report for Date: {report.Date} | Position: {report.Position}" +
+                            $" | ReportTime: {report.ReportTime} | NamePress: {report.NamePress} | Coll: {report.Coll}",
+                            report.Date, report.Position);
 
-                    _logger.LogInformation($"Report for Date: {reportData.Date} | Position: {reportData.Position}" +
-                        $" | ReportTime: {reportData.ReportTime} | NamePress: {reportData.NamePress} | Coll: {reportData.Coll}",
-                        reportData.Date, reportData.Position);
-
-                    lastMessage = $"Дата производства : {reportData.Date}\n" +
-                        $"№Пресса : {reportData.Position}\n" +
-                        $"Смена : {reportData.ReportTime}\n" +
-                        $"Рецепт : {reportData.NamePress}\n" +
-                        $"Количетво кирпича, шт. : {reportData.Coll}";
+                        lastMessage += $"Дата производства : {report.Date}\n" +
+                            $"№Пресса : {report.Position}\n" +
+                            $"Смена : {report.ReportTime}\n" +
+                            $"Рецепт : {report.NamePress}\n" +
+                            $"Количетво кирпича, шт. : {report.Coll}\n";
+                    }
 
                     if (!string.IsNullOrEmpty(lastMessage))
                     {
