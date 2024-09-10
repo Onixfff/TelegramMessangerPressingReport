@@ -18,6 +18,7 @@ namespace TelegramMessangerPressingReport.Controller
         {
             //DateTime now = DateTime.Now;
             DateTime currentTime = DateTime.Now;
+            currentTime = new DateTime(2024, 09, 10, 20, 5, 00);
 
             DateTime today = currentTime.Date;
 
@@ -36,19 +37,25 @@ namespace TelegramMessangerPressingReport.Controller
             {
                 TimeOnly time = TimeOnly.FromDateTime(currentTime);
 
-                DateTime start = DateTime.MinValue;
-                DateTime end = DateTime.MinValue;
+                DateTime start;
+                DateTime end;
 
-                if (time >= _nightShift)
+                if (time >= _nightShift.AddMinutes(1))
                 {
                     end = endDay;
                     start = startDay.AddDays(1);
                 }
-                if (time <= _dayShift)
+                else if (time <= _dayShift.AddMinutes(1))
                 {
                     end = endDay.AddDays(-1);
                     start = startDay;
                 }
+                else
+                {
+                    start = DateTime.MinValue;
+                    end = DateTime.MinValue;
+                }
+
                 return (end, start);
             }
         }

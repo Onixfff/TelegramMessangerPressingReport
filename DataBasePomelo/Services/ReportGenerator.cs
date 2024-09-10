@@ -2,7 +2,6 @@
 using DataBasePomelo.Models.silikat;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Runtime.InteropServices;
 using TelegramMessangerPressingReport.Controller;
 
 namespace DataBasePomelo.Controllers
