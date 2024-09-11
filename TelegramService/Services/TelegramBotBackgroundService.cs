@@ -4,6 +4,7 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using TelegramService.Options;
 
 namespace TelegramService.Services
@@ -40,18 +41,22 @@ namespace TelegramService.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            ReceiverOptions receiverOptions = new()
+            ReceiverOptions receiverOptions = new ReceiverOptions
             {
-                AllowedUpdates = []
+                AllowedUpdates = new[] { UpdateType.Message } // Обрабатывает только текстовые сообщения
             };
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                await _botClient.ReceiveAsync(
-                    updateHandler: HandlerUpdateAsync,
-                    pollingErrorHandler: HandlerPollingErrorAsync,
-                    receiverOptions: receiverOptions,
-                    cancellationToken: stoppingToken);
+                try
+                {
+                    await _botClient.ReceiveAsync(
+                        updateHandler: HandlerUpdateAsync,
+                        pollingErrorHandler: HandlerPollingErrorAsync,
+                        receiverOptions: receiverOptions,
+                        cancellationToken: stoppingToken);
+                }
+                catch (Exception ex) { _logger.LogError(ex, "Error occurred while receiving updates."); }
             }
         }
 
@@ -67,13 +72,15 @@ namespace TelegramService.Services
             Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
 
             var sendMessageRequest = new SendMessageRequest(chatId, messageText);
-
-            Message sentMessage = await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: "Я не могу ответить на это сообщение:\n" + messageText,
-                replyToMessageId: message.MessageId,
-                cancellationToken: cancellationToken);
-
+            try
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: "Я не могу ответить на это сообщение:\n" + messageText,
+                    replyToMessageId: message.MessageId,
+                    cancellationToken: cancellationToken);
+            }
+            catch (Exception ex) { _logger.LogError(ex, $"Failed to send message to chat {chatId}"); }
         }
 
         internal Task HandlerPollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -85,16 +92,22 @@ namespace TelegramService.Services
                 _ => exception.ToString()
             };
 
-            Console.WriteLine(ErrorMessage);
+            _logger.LogInformation(ErrorMessage);
             return Task.CompletedTask;
         }
-
 
         internal async Task SendMessageToAllUsersAsync(string message, CancellationToken stoppingToken)
         {
             foreach (var chatId in _usersChatId)
             {
-                await _botClient.SendTextMessageAsync(chatId, message, cancellationToken: stoppingToken);
+                try
+                {
+                    await _botClient.SendTextMessageAsync(chatId, message, cancellationToken: stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Failed to send message to chat {chatId}");
+                }
             }
         }
     }
