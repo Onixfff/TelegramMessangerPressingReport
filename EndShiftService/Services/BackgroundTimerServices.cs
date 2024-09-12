@@ -64,6 +64,10 @@ namespace EndShiftService.Services
                     {
                         await _eventAggregator.PublishMessage(message, stoppingToken);
                     }
+                    else
+                    {
+                        _logger.LogWarning("Message is Null Or Empty \nmessage : {message}", message);
+                    }
 
                     message = CreateMessage(reportDataSecond);
 
@@ -71,13 +75,24 @@ namespace EndShiftService.Services
                     {
                         await _eventAggregator.PublishMessage(message, stoppingToken);
                     }
+                    else
+                    {
+                        _logger.LogWarning("Message is Null Or Empty \nmessage : {message}", message);
+                    }
 
                     #endregion
+                }
+                catch (OperationCanceledException ex)
+                {
+                    _logger.LogWarning("Operation was canceled: {message}", ex.Message);
+                    // Прекращение цикла, если отменено
+                    break;
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "An error occurred during the report generation.");
                 }
+
             }
         }
 
@@ -85,16 +100,21 @@ namespace EndShiftService.Services
         {
             string message = string.Empty;
 
-            _logger.LogInformation($"Report First for Date: {reportResultDto.Date} | Position: {reportResultDto.Position}" +
-            $" | ReportTime: {reportResultDto.ReportTime} | NamePress: {reportResultDto.NamePress} | Coll: {reportResultDto.Coll}",
-            reportResultDto.Date, reportResultDto.Position);
+            if (!string.IsNullOrEmpty(reportResultDto.NamePress))
+            {
+                if (!string.IsNullOrEmpty(reportResultDto.Date))
+                {
+                    _logger.LogInformation($"Report First for Date: {reportResultDto.Date} | Position: {reportResultDto.Position}" +
+                                            $" | ReportTime: {reportResultDto.ReportTime} | NamePress: {reportResultDto.NamePress} | Coll: {reportResultDto.Coll}",
+                                            reportResultDto.Date, reportResultDto.Position);
 
-            message += $"Дата производства : {reportResultDto.Date}\n" +
-            $"№Пресса : {reportResultDto.Position}\n" +
-            $"Смена : {reportResultDto.ReportTime}\n" +
-            $"Рецепт : {reportResultDto.NamePress}\n" +
-            $"Количетво кирпича, шт. : {reportResultDto.Coll}\n";
-
+                    message += $"Дата производства : {reportResultDto.Date}\n" +
+                                $"№Пресса : {reportResultDto.Position}\n" +
+                                $"Смена : {reportResultDto.ReportTime}\n" +
+                                $"Рецепт : {reportResultDto.NamePress}\n" +
+                                $"Количетво кирпича, шт. : {reportResultDto.Coll}\n";
+                }
+            }
             return message;
         }
     }

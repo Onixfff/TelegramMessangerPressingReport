@@ -6,11 +6,14 @@
 
         public async Task PublishMessage(string message, CancellationToken token)
         {
-            if (OnMessageReceived != null)
+            if (!string.IsNullOrEmpty(message))
             {
-                var invocationList = OnMessageReceived.GetInvocationList();
-                var tasks = invocationList.Select(d => ((Func<string, CancellationToken, Task>)d)(message, token));
-                await Task.WhenAll(tasks);
+                if (OnMessageReceived != null)
+                {
+                    var invocationList = OnMessageReceived.GetInvocationList();
+                    var tasks = invocationList.Select(d => ((Func<string, CancellationToken, Task>)d)(message, token));
+                    await Task.WhenAll(tasks);
+                }
             }
         }
 

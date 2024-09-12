@@ -104,6 +104,16 @@ namespace TelegramService.Services
                 {
                     await _botClient.SendTextMessageAsync(chatId, message, cancellationToken: stoppingToken);
                 }
+                catch (Telegram.Bot.Exceptions.ApiRequestException ex) when (ex.ErrorCode == 403)
+                {
+                    // Пользователь заблокировал бота или удалил чат
+                    _logger.LogWarning($"Cannot send message to chat {chatId}. User has blocked the bot or deleted the chat.");
+                }
+                catch (Telegram.Bot.Exceptions.ApiRequestException ex) when (ex.ErrorCode == 400)
+                {
+                    // Неверный chatId или другие ошибки
+                    _logger.LogWarning($"Failed to send message to chat {chatId}. Bad request: {ex.Message}");
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, $"Failed to send message to chat {chatId}");
