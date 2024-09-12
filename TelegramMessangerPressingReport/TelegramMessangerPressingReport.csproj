@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>a7e49d0c-f13f-4c62-9bce-94869f0d0cb2</UserSecretsId>
     <Configurations>Debug;Release;щщш</Configurations>
+    <StartupObject>TelegramMessangerPressingReport.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
   </ItemGroup>
 

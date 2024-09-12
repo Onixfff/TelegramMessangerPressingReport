@@ -36,7 +36,14 @@ namespace TelegramService.Services
 
         private TelegramBotClient CreateBotClient()
         {
-            return new TelegramBotClient(_options.Token);
+            try
+            {
+                return new TelegramBotClient(_options.Token);
+            }
+            catch (Exception ex) 
+            {
+                throw;
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -55,6 +62,11 @@ namespace TelegramService.Services
                         pollingErrorHandler: HandlerPollingErrorAsync,
                         receiverOptions: receiverOptions,
                         cancellationToken: stoppingToken);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    _logger.LogWarning("Operation was canceled: {message}", ex.Message);
+                    // Прекращение цикла, если отменено
                 }
                 catch (Exception ex) { _logger.LogError(ex, "Error occurred while receiving updates."); }
             }
@@ -80,6 +92,11 @@ namespace TelegramService.Services
                     replyToMessageId: message.MessageId,
                     cancellationToken: cancellationToken);
             }
+            catch (OperationCanceledException ex)
+            {
+                _logger.LogWarning("Operation was canceled: {message}", ex.Message);
+                // Прекращение цикла, если отменено
+            }
             catch (Exception ex) { _logger.LogError(ex, $"Failed to send message to chat {chatId}"); }
         }
 
@@ -103,6 +120,11 @@ namespace TelegramService.Services
                 try
                 {
                     await _botClient.SendTextMessageAsync(chatId, message, cancellationToken: stoppingToken);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    _logger.LogWarning("Operation was canceled: {message}", ex.Message);
+                    // Прекращение цикла, если отменено
                 }
                 catch (Telegram.Bot.Exceptions.ApiRequestException ex) when (ex.ErrorCode == 403)
                 {

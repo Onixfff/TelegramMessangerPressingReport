@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharedLibrary.Interface;
+using System.Diagnostics;
 using TelegramMessangerPressingReport.Controller;
 using TelegramService.Options;
 using TelegramService.Services;
@@ -18,7 +19,9 @@ namespace TelegramMessangerPressingReport
     {
         static void Main(string[] args)
         {
-            var host = Host.CreateDefaultBuilder(args)
+            var isWindowsService = !(Debugger.IsAttached || args.Contains("--console"));
+
+            var builder = Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
                     config.SetBasePath(AppContext.BaseDirectory)
@@ -59,8 +62,14 @@ namespace TelegramMessangerPressingReport
                     services.AddHostedService<BackgroundTimerServices>();
                     services.AddHostedService<TelegramBotBackgroundService>();
 
-                })
-                .Build();
+                });
+            
+            if (isWindowsService)
+            {
+                builder.UseWindowsService();
+            }
+
+            var host = builder.Build();
 
             host.Run();
         }

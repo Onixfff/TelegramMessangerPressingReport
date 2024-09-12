@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-TelegramService-1a53778c-110a-4928-93bc-7817f08da492</UserSecretsId>
     <Configurations>Debug;Release;щщш</Configurations>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
