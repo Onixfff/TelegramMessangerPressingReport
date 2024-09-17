@@ -16,9 +16,7 @@ namespace TelegramMessangerPressingReport.Controller
 
         public static (DateTime Start, DateTime End) GetReportPeriod(ReportTime reportTime)
         {
-            //DateTime now = DateTime.Now;
             DateTime currentTime = DateTime.Now;
-            currentTime = new DateTime(2024, 09, 10, 20, 5, 00);
 
             DateTime today = currentTime.Date;
 
