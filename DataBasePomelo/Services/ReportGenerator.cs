@@ -42,6 +42,7 @@ namespace DataBasePomelo.Controllers
                 .ToListAsync(cancellationToken);
 
             ReportResultDto reportResults = new ReportResultDto(null, null, null, null, double.NegativeZero);
+            string FirstOrSecond = null;
 
             switch (reportType)
             {
@@ -67,7 +68,7 @@ namespace DataBasePomelo.Controllers
 
                     if (results1 != null && totalSum1 != null)
                     {
-                        string FirstOrSecond = "Первый";
+                        FirstOrSecond = "Первый";
 
                         reportResults = new ReportResultDto(
                             results1.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),
@@ -101,7 +102,7 @@ namespace DataBasePomelo.Controllers
 
                     if (results2 != null && totalSum2 != null)
                     {
-                        string FirstOrSecond = "Второй";
+                        FirstOrSecond = "Второй";
 
                         reportResults = new ReportResultDto(
                             results2.FirstOrDefault().FirstItem.reportPres.Id.ToString("dd, MMMM, yyyy"),

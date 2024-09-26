@@ -14,8 +14,8 @@ namespace DataBasePomelo
         }
 
         // Свойства для доступа к нужным DbSet
-        public DbSet<ReportPress> reportPresses => _silikatContext.ReportPresses1Entity;
-        public DbSet<ReportPress2> reportPresses2 => _silikatContext.ReportPress2Entity;
+        public DbSet<ReportPress> reportPresses => _silikatContext.ReportPressesEntity;
+        public DbSet<ReportPress2> reportPresses2 => _silikatContext.ReportPress2s;
         public DbSet<Nomenklatura> Nomenklaturas => _silikatContext.NomenklaturasEntity;
 
         // Метод для сохранения изменений в обоих контекстах
