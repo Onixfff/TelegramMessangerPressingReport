@@ -23,9 +23,9 @@ namespace DataBasePomelo.Controllers
             _logger = logger;
         }
 
-        public async Task <ReportResultDto> GetCunsumptionReportAsync(ReportTime reportTime, ReportType reportType, CancellationToken cancellationToken)
+        public async Task <ReportResultDto> GetCunsumptionReportAsync(DateTime currentTime, ReportTime reportTime, ReportType reportType, CancellationToken cancellationToken)
         {
-            var reportPeriod = ReportTimePeriodCalculator.GetReportPeriod(reportTime);
+            var reportPeriod = ReportTimePeriodCalculator.GetReportPeriod(reportTime, currentTime);
 
             if (reportPeriod.Start == DateTime.MinValue || reportPeriod.End == DateTime.MinValue)
             {

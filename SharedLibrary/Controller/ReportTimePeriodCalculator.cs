@@ -14,10 +14,8 @@ namespace TelegramMessangerPressingReport.Controller
         private static readonly TimeOnly _nightShift = new TimeOnly(20, 5, 0, 0, 0); //Время начала ночной смены
         private ReportTime _reportTime;
 
-        public static (DateTime Start, DateTime End) GetReportPeriod(ReportTime reportTime)
+        public static (DateTime Start, DateTime End) GetReportPeriod(ReportTime reportTime, DateTime currentTime)
         {
-            DateTime currentTime = DateTime.Now;
-
             DateTime today = currentTime.Date;
 
             // Время начала дневного отчета - 8:05:00
@@ -33,6 +31,7 @@ namespace TelegramMessangerPressingReport.Controller
             }
             else
             {
+                //Возвращает ночной период: с 20:05 до 8:05
                 TimeOnly time = TimeOnly.FromDateTime(currentTime);
 
                 DateTime start;

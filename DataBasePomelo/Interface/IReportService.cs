@@ -6,6 +6,6 @@ namespace DataBasePomelo.Interface
 {
     public interface IReportService
     {
-        public Task<ReportResultDto> GetCunsumptionReportAsync(ReportTime reportTime, ReportType reportType, CancellationToken cancellationToken);
+        public Task<ReportResultDto> GetCunsumptionReportAsync(DateTime currentTime, ReportTime reportTime, ReportType reportType, CancellationToken cancellationToken);
     }
 }

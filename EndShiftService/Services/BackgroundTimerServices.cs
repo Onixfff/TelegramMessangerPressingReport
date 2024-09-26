@@ -31,6 +31,7 @@ namespace EndShiftService.Services
                 {
                     #region ќжидание времени
                     DateTime currentTime = DateTime.Now;
+                    currentTime = new DateTime(2024, 09, 24, 20, 04, 55);
                     TimeSpan? waitingTime = _timeWaiting.GetTimeWaitingRequest(currentTime);
 
                     if (waitingTime.HasValue && waitingTime.Value > TimeSpan.Zero && waitingTime != null)
@@ -45,6 +46,9 @@ namespace EndShiftService.Services
                     }
                     #endregion
 
+                    currentTime = DateTime.Now;
+                    currentTime = new DateTime(2024, 09, 24, 20, 04, 55);
+
                     #region отправка запроса на вз€тие данных
                     stoppingToken.ThrowIfCancellationRequested();
 
@@ -55,8 +59,8 @@ namespace EndShiftService.Services
                         _logger.LogInformation("Fetching report for {reportTime} at {time}", currentReportTime, DateTimeOffset.Now);
                     }
 
-                    var reportDataFirst = await _reportService.GetCunsumptionReportAsync(currentReportTime, DataBasePomelo.Controllers.ReportType.FirstReport, stoppingToken);
-                    var reportDataSecond = await _reportService.GetCunsumptionReportAsync(currentReportTime, DataBasePomelo.Controllers.ReportType.SecondReport, stoppingToken);
+                    var reportDataFirst = await _reportService.GetCunsumptionReportAsync(currentTime, currentReportTime, DataBasePomelo.Controllers.ReportType.FirstReport, stoppingToken);
+                    var reportDataSecond = await _reportService.GetCunsumptionReportAsync(currentTime, currentReportTime, DataBasePomelo.Controllers.ReportType.SecondReport, stoppingToken);
 
                     string message = CreateMessage(reportDataFirst);
 
