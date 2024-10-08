@@ -1,8 +1,10 @@
+using CSharpFunctionalExtensions;
 using DataBasePomelo.Controllers;
 using DataBasePomelo.Interface;
 using SharedLibrary.Interface;
 using TelegramMessangerPressingReport.Controller;
 using TelegramService.Services;
+using static DataBasePomelo.Controllers.ReportGenerator;
 
 namespace EndShiftService.Services
 {
@@ -55,10 +57,15 @@ namespace EndShiftService.Services
                         _logger.LogInformation("Fetching report for {reportTime} at {time}", currentReportTime, DateTimeOffset.Now);
                     }
 
-                    var reportDataFirst = await _reportService.GetCunsumptionReportAsync(currentReportTime, DataBasePomelo.Controllers.ReportType.FirstReport, stoppingToken);
-                    var reportDataSecond = await _reportService.GetCunsumptionReportAsync(currentReportTime, DataBasePomelo.Controllers.ReportType.SecondReport, stoppingToken);
+                    Result<ReportResultDto> resultReportDataFirst = await _reportService.GetCunsumptionReportAsync(currentReportTime, ReportType.FirstReport, stoppingToken);
 
-                    string message = CreateMessage(reportDataFirst);
+                    if (resultReportDataFirst.IsFailure)
+                    {
+                        _logger.LogError(resultReportDataFirst.Error);
+                        new Exception(resultReportDataFirst.Error);
+                    }
+
+                    string message = CreateMessage(resultReportDataFirst.Value);
 
                     if (!string.IsNullOrEmpty(message))
                     {
@@ -69,7 +76,15 @@ namespace EndShiftService.Services
                         _logger.LogWarning("Message is Null Or Empty \nmessage : {message}", message);
                     }
 
-                    message = CreateMessage(reportDataSecond);
+                    Result<ReportResultDto> resultReportDataSecond = await _reportService.GetCunsumptionReportAsync(currentReportTime, ReportType.SecondReport, stoppingToken);
+
+                    if (resultReportDataSecond.IsFailure)
+                    {
+                        _logger.LogError(resultReportDataSecond.Error);
+                        new Exception(resultReportDataSecond.Error);
+                    }
+
+                    message = CreateMessage(resultReportDataSecond.Value);
 
                     if (!string.IsNullOrEmpty(message))
                     {

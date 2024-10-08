@@ -1,4 +1,5 @@
-﻿using DataBasePomelo.Interface;
+﻿using CSharpFunctionalExtensions;
+using DataBasePomelo.Interface;
 using DataBasePomelo.Models.silikat;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -23,14 +24,13 @@ namespace DataBasePomelo.Controllers
             _logger = logger;
         }
 
-        public async Task <ReportResultDto> GetCunsumptionReportAsync(ReportTime reportTime, ReportType reportType, CancellationToken cancellationToken)
+        public async Task <Result<ReportResultDto>> GetCunsumptionReportAsync(ReportTime reportTime, ReportType reportType, CancellationToken cancellationToken)
         {
             var reportPeriod = ReportTimePeriodCalculator.GetReportPeriod(reportTime);
 
             if (reportPeriod.Start == DateTime.MinValue || reportPeriod.End == DateTime.MinValue)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                throw new InvalidOperationException("Report period contains invalid dates.");
+                Result.Failure("Report period contains invalid dates.");
             }
 
             DateTime start = reportPeriod.Start;
@@ -40,6 +40,11 @@ namespace DataBasePomelo.Controllers
 
             List<Nomenklatura> nomenklaturas = await _dbContext.Nomenklaturas
                 .ToListAsync(cancellationToken);
+
+            if(nomenklaturas.Count <= 0)
+            {
+                Result.Failure("nomenklaturas.count canot be zero or negative");
+            }
 
             ReportResultDto reportResults = new ReportResultDto(null, null, null, null, double.NegativeZero);
 
@@ -77,6 +82,10 @@ namespace DataBasePomelo.Controllers
                             Math.Round((double)totalSum1, 2)
                         );
                     }
+                    else
+                    {
+                        Result.Failure("results1 == null or totalSum1 == null");
+                    }
 
                     break;
                 case ReportType.SecondReport:
@@ -111,14 +120,18 @@ namespace DataBasePomelo.Controllers
                             Math.Round((double)totalSum2, 2)
                         );
                     }
+                    else
+                    {
+                        Result.Failure("results2 == null or totalSum2 == null");
+                    }
 
                     break;
                 default:
-                    cancellationToken.ThrowIfCancellationRequested();
-                    throw new InvalidOperationException("Invalid report type specified.");
+                    Result.Failure("Invalid report type specified.");
+                    break;
             }
 
-            return reportResults;
+            return Result.Success(reportResults);
         }
     }
 }
