@@ -33,6 +33,7 @@ namespace EndShiftService.Services
                 {
                     #region ќжидание времени
                     DateTime currentTime = DateTime.Now;
+
                     TimeSpan? waitingTime = _timeWaiting.GetTimeWaitingRequest(currentTime);
 
                     if (waitingTime.HasValue && waitingTime.Value > TimeSpan.Zero && waitingTime != null)
@@ -49,6 +50,7 @@ namespace EndShiftService.Services
 
                     #region отправка запроса на вз€тие данных
                     stoppingToken.ThrowIfCancellationRequested();
+                    string message;
 
                     ReportTime currentReportTime = _timeWaiting.GetTimeReport();
 
@@ -61,11 +63,13 @@ namespace EndShiftService.Services
 
                     if (resultReportDataFirst.IsFailure)
                     {
-                        _logger.LogError(resultReportDataFirst.Error);
-                        new Exception(resultReportDataFirst.Error);
+                        _logger.LogError($"Message is Null Or Empty \nmessage - {resultReportDataFirst.Error}");
+                        message = $"Message is Null Or Empty \nmessage - {resultReportDataFirst.Error}";
                     }
-
-                    string message = CreateMessage(resultReportDataFirst.Value);
+                    else
+                    {
+                        message = CreateMessage(resultReportDataFirst.Value);
+                    }
 
                     if (!string.IsNullOrEmpty(message))
                     {
@@ -80,11 +84,13 @@ namespace EndShiftService.Services
 
                     if (resultReportDataSecond.IsFailure)
                     {
-                        _logger.LogError(resultReportDataSecond.Error);
-                        new Exception(resultReportDataSecond.Error);
+                        _logger.LogError($"Message is Null Or Empty \nmessage - {resultReportDataSecond.Error}");
+                        message = ($"Message is Null Or Empty \nmessage - {resultReportDataSecond.Error}");
                     }
-
-                    message = CreateMessage(resultReportDataSecond.Value);
+                    else
+                    {
+                        message = CreateMessage(resultReportDataSecond.Value);
+                    }
 
                     if (!string.IsNullOrEmpty(message))
                     {

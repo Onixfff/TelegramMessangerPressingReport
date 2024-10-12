@@ -51,6 +51,7 @@ namespace DataBasePomelo.Controllers
             switch (reportType)
             {
                 case ReportType.FirstReport:
+
                     List<ReportPress> reportPress1 = await _dbContext.reportPresses
                     .Where(report => report.Id >= start && report.Id <= end)
                     .ToListAsync(cancellationToken);
@@ -70,7 +71,7 @@ namespace DataBasePomelo.Controllers
                                      on reportPres.IdNomenklatura equals nomenklatura.Id
                                      select nomenklatura.Col).Sum();
 
-                    if (results1 != null && totalSum1 != null)
+                    if (results1 != null && totalSum1 != null && reportPress1 != null && reportPress1.Count > 0)
                     {
                         string FirstOrSecond = "Первый";
 
@@ -84,11 +85,12 @@ namespace DataBasePomelo.Controllers
                     }
                     else
                     {
-                        Result.Failure("results1 == null or totalSum1 == null");
+                        return Result.Failure<ReportResultDto>("results1 == null or totalSum1 == null");
                     }
 
                     break;
                 case ReportType.SecondReport:
+
                     List<ReportPress2> reportPress2 = await _dbContext.reportPresses2
                     .Where(report => report.Id >= start && report.Id <= end)
                     .ToListAsync(cancellationToken);
@@ -108,7 +110,7 @@ namespace DataBasePomelo.Controllers
                                      on reportPres.IdNomenklatura equals nomenklatura.Id
                                      select nomenklatura.Col).Sum();
 
-                    if (results2 != null && totalSum2 != null)
+                    if (results2 != null && totalSum2 != null && reportPress2 != null && reportPress2.Count > 0)
                     {
                         string FirstOrSecond = "Второй";
 
@@ -122,7 +124,7 @@ namespace DataBasePomelo.Controllers
                     }
                     else
                     {
-                        Result.Failure("results2 == null or totalSum2 == null");
+                        return Result.Failure<ReportResultDto>("results2 == null or totalSum2 == null");
                     }
 
                     break;
